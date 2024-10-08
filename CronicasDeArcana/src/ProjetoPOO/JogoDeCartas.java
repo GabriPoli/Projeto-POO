@@ -26,25 +26,7 @@ public class JogoDeCartas {
         }
         
         System.out.println("Fim de Jogo!!!");
-        
-
-        
-        
-        
-        
-        
-        
-        
-        
-        //ArrayList<Criatura> listaCriaturas = jogador1.getCriaturasLista();
-        //Selecione qual carta vc quer usar para atacar seu baitola
-       //for (Criatura criatura : listaCriaturas) {
-		//0 - criatura.getNome();
-    	   
-    	   //criatura.getNome();
-       //}
-       
-       //criaturas.get(0);
+  
        
     }
     

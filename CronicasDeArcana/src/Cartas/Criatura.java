@@ -40,5 +40,15 @@ public class Criatura extends Carta{
     public int danoRecebido(Criatura defensora) {
     	return this.poder - defensora.resistencia;
 	}
+    
+    public void receberFeitico(int quantidade) {
+    	
+    	this.resistencia -= quantidade;
+    }
+    
+    public void receberCura(int quantidade) {
+    	
+    	this.resistencia += quantidade;
+    }
  
 }

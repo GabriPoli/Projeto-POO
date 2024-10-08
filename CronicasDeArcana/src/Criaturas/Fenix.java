@@ -7,7 +7,7 @@ public class Fenix extends Criatura{
 
 	public Fenix() {
 
-		super(3, 3, 6,"Fênix", "Das suas próprias cinzas renasce e levanda voo rumo a novos desafios!");
+		super(3, 3, 1,"Fênix", "Das suas próprias cinzas renasce e levanda voo rumo a novos desafios!");
 	}
 	
 	public void habilidadeCura(Jogadores jogador) {

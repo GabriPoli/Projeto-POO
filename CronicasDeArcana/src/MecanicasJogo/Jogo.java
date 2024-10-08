@@ -1,12 +1,12 @@
 package MecanicasJogo;
-
+import Feiticos.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import Criaturas.*;
 import Cartas.Carta;
-
-public class Jogo {
+import Cartas.*
+;public class Jogo {
 
 	private int turno = 1;
 	private boolean isJogador1 = true;
@@ -15,23 +15,26 @@ public class Jogo {
 	private ArrayList<Carta> campoDeBatalha1;
 	private ArrayList<Carta> campoDeBatalha2;
 	
-	Cerbero cerbero = new Cerbero();
-	Fenix fenix = new Fenix();
-	Golem golem = new Golem();
-	Minotauro minotauro = new Minotauro();
-	Grifo grifo = new Grifo();
-	Yeti yeti = new Yeti();
+	Carta cerbero = new Cerbero();
+	Carta fenix = new Fenix();
+	Carta golem = new Golem();
+	Carta minotauro = new Minotauro();
+	Carta grifo = new Grifo();
+	Carta yeti = new Yeti();
+	Carta terremoto = new Terremoto();
+	Carta curar = new Curar();
 	
 	public Jogo() {
 		mao1 = new ArrayList<Carta>();
 		mao1.add(cerbero);
 		mao1.add(grifo);
 		mao1.add(minotauro);
-		
+		mao1.add(terremoto);
 		mao2 = new ArrayList<Carta>();
 		mao2.add(fenix);
 		mao2.add(golem);
 		mao2.add(yeti);
+		mao2.add(curar);
 	}
 	
 	public void cartasDoCampo(Jogadores campo, Carta criaturaParaCampo) {
@@ -113,111 +116,115 @@ public class Jogo {
 	}
 
 	public void executarTurno(Jogadores jogador1, Jogadores jogador2) {
+	    System.out.println("Turno " + turno);
 
-		System.out.println("Turno " + turno);
+	    Scanner escolha = new Scanner(System.in);
 
-		Scanner escolha = new Scanner(System.in);
-		
-		if (isJogador1) {
-			
-			if(campoDeBatalha1.size() == 0) {
-				comecoJogo(jogador1);
-				isJogador1 = true;
-				
-				System.out.println(jogador1.getNomeJogador() + " o que deseja fazer?");
-				System.out.println("1-Ataque");
-				int acao1;
-				acao1 = escolha.nextInt();
-				
-				if(acao1 == 1) {
-					isJogador1 = false;
-					atacar(jogador1, jogador2);
-					
-					if(jogador2.getCriatura().isVivo() == false) {
-						System.out.println(jogador1.getCriatura().getNome()+" destruiu "+jogador2.getCriatura().getNome());
-						campoDeBatalha2.remove(jogador2.getCriatura());
-					}
-				}
-			}
-			else {
-				cartasDoCampo(jogador1, jogador1.getCriatura());
-				System.out.println(jogador1.getNomeJogador() + " o que deseja fazer?");
-				System.out.println("1-Ataque");
-				int acao1;
-				acao1 = escolha.nextInt();
-				
-				if(acao1 == 1) {
-					isJogador1 = false;
-					atacar(jogador1, jogador2);
-					
-					if(jogador2.getCriatura().isVivo() == false) {
-						System.out.println(jogador1.getCriatura().getNome()+" destruiu "+jogador2.getCriatura().getNome());
-						campoDeBatalha2.remove(jogador2.getCriatura());
-					}
-				}
-			}
-		} 
-		
-		else {
-			
-			if(campoDeBatalha2.size() == 0) {
-				comecoJogo(jogador2);
-				isJogador1 = false;
-				
-				System.out.println(jogador2.getNomeJogador() + " o que deseja fazer?");
-				System.out.println("1-Ataque");
-				int acao1;
-				acao1 = escolha.nextInt();
-				
-				if(acao1 == 1) {
-					isJogador1 = true;
-					atacar(jogador2, jogador1);
-					
-					if(jogador1.getCriatura().isVivo() == false) {
-						System.out.println(jogador2.getCriatura().getNome()+" destruiu "+jogador1.getCriatura().getNome());
-						campoDeBatalha1.remove(jogador1.getCriatura());
-					}
-				}
-			}
-			else {
-				cartasDoCampo(jogador2, jogador2.getCriatura());
-				System.out.println(jogador2.getNomeJogador() + " o que deseja fazer?");
-				System.out.println("1-Ataque");
-				int acao1;
-				acao1 = escolha.nextInt();
-				
-				if(acao1 == 1) {
-					isJogador1 = true;
-					atacar(jogador2, jogador1);
-					
-					if(jogador1.getCriatura().isVivo() == false) {
-						System.out.println(jogador2.getCriatura().getNome()+" destruiu "+jogador1.getCriatura().getNome());
-						campoDeBatalha1.remove(jogador1.getCriatura());
-					}
-				}
-			}
-		}
+	    if (isJogador1) {
+	        // Verifica se o campo de batalha do jogador 1 está vazio
+	        if (campoDeBatalha1.size() == 0) {
+	            comecoJogo(jogador1);
+	            isJogador1 = true;
+	        }
 
-		System.out.println("Fim do truno " + turno);
-		turno++;
+	        boolean escolhaInvalida = true;
+	        while (escolhaInvalida) {
+	            System.out.println(jogador1.getNomeJogador() + " o que deseja fazer?");
+	            System.out.println("1 - Ataque");
+	            int acao1 = escolha.nextInt();
+
+	            if (acao1 == 1) {
+	                atacar(jogador1, jogador2);
+
+	                if (!jogador2.getCriatura().isVivo()) {
+	                    campoDeBatalha2.remove(jogador2.getCriatura());
+	                }
+
+	                escolhaInvalida = false; // Sair do loop, pois a ação foi válida
+	            } else {
+	                System.out.println("Escolha inválida, tente novamente.");
+	            }
+	        }
+	        isJogador1 = false; // Passa o turno para o próximo jogador
+	    } else {
+	        // Verifica se o campo de batalha do jogador 2 está vazio
+	        if (campoDeBatalha2.size() == 0) {
+	            comecoJogo(jogador2);
+	            isJogador1 = false;
+	        }
+
+	        boolean escolhaInvalida = true;
+	        while (escolhaInvalida) {
+	            System.out.println(jogador2.getNomeJogador() + " o que deseja fazer?");
+	            System.out.println("1 - Ataque");
+	            int acao2 = escolha.nextInt();
+
+	            if (acao2 == 1) {
+	                atacar(jogador2, jogador1);
+
+	                if (!jogador1.getCriatura().isVivo()) {
+	                    campoDeBatalha1.remove(jogador1.getCriatura());
+	                }
+
+	                escolhaInvalida = false; // Sair do loop, pois a ação foi válida
+	            } else {
+	                System.out.println("Escolha inválida, tente novamente.");
+	            }
+	        }
+	        isJogador1 = true; // Passa o turno para o próximo jogador
+	    }
+
+	    System.out.println("Fim do turno " + turno);
+	    turno++;
 	}
+
 
 	public void atacar(Jogadores jogadorAtaque, Jogadores jogadorDefesa) {
+	    Carta cartaAtacante = jogadorAtaque.getCriatura();
+	    Carta cartaDefensora = jogadorDefesa.getCriatura();
 
-		if (jogadorDefesa.getCriatura().getResistencia() < jogadorAtaque.getCriatura().getPoder()) {
+	    // Enquanto a ação for inválida, o jogo continua pedindo uma escolha válida
+	    while (true) {
+	        // Se o atacante for um feitiço, ele só pode atacar criaturas
+	        if (cartaAtacante instanceof Feitico) {
+	            if (!(cartaDefensora instanceof Criatura)) {
+	                System.out.println("Feitiços só podem atacar criaturas. Escolha outra ação.");
+	                return; // Feitiço não pode atacar algo que não seja uma criatura
+	            }
+	        }
 
-			int dano = jogadorAtaque.getCriatura().getPoder() - jogadorDefesa.getCriatura().getResistencia();
-			int vidaAtual = jogadorDefesa.getVidaJogador() - dano;
-			jogadorDefesa.getCriatura().setVivo(false);
-			jogadorDefesa.setVidaJogador(vidaAtual);
-			
-		} else {
+	        // Se o atacante for uma criatura, ela só pode atacar outra criatura
+	        if (cartaAtacante instanceof Criatura) {
+	            if (!(cartaDefensora instanceof Criatura)) {
+	                System.out.println("Criaturas só podem atacar outras criaturas. Escolha outra ação.");
+	                return; // Criatura não pode atacar feitiço ou outro tipo de carta
+	            }
+	        }
 
-			int vidaAtual = jogadorDefesa.getVidaJogador();
-			jogadorDefesa.getCriatura().setVivo(true);
-			jogadorDefesa.setVidaJogador(vidaAtual);
-		}
+	        // Lógica de combate: caso o ataque seja válido (criatura vs. criatura ou feitiço vs. criatura)
+	        if (cartaDefensora.getResistencia() < cartaAtacante.getPoder()) {
+	            int dano = cartaAtacante.getPoder() - cartaDefensora.getResistencia();
+	            int vidaAtual = jogadorDefesa.getVidaJogador() - dano;
+	            cartaDefensora.setVivo(false);
+	            jogadorDefesa.setVidaJogador(vidaAtual);
+	            System.out.println(cartaAtacante.getNome() + " destruiu " + cartaDefensora.getNome());
+
+	            // Se o ataque foi válido, removemos a carta do campo de batalha do defensor
+	            if (cartaAtacante instanceof Feitico) {
+	                // Remove o feitiço da mão do atacante, pois foi usado com sucesso
+	                jogadorAtaque.getMao().remove(cartaAtacante);
+	            }
+
+	            break; // Saímos do loop, pois o ataque foi bem-sucedido
+	        } else {
+	            System.out.println(cartaDefensora.getNome() + " sobreviveu ao ataque de " + cartaAtacante.getNome());
+	            break; // Saímos do loop, o combate foi processado
+	        }
+	    }
 	}
+
+
+
 
 	public ArrayList<Carta> getListaCriaturas1() {
 		return mao1;

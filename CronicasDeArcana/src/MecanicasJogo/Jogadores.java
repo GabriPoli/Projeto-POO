@@ -85,6 +85,22 @@ public class Jogadores {
 		this.campoDeBatalha = campoDeBatalha;
 	}
 	
+	//Para Encantamento
+	
+	public void aumentarVida(int quantidade) {
+
+        this.vidaJogador += quantidade;
+
+    }
+	
+	public void aumentarMana(int quantidade) {
+
+        this.manaJogador += quantidade;
+
+    }
+
+
+	
 	
 	
 	
